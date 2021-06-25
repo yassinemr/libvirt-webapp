@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h3>Network</h3>
+    <table class="table mt-5" role="main">
+        <tbody>
+            <tr>
+                <td>Network name</td>
+                <td>
+                    {{network}}
+                </td>
+            </tr>
+            <tr>
+                <td>Device pool</td>
+                <td>{{ device }}</td>
+            </tr>
+            <tr>
+                <td>State</td>
+                <td>
+                    <form action="" method="post" role="form">{% csrf_token %}
+                        {% ifequal state 0 %}
+                            <input type="submit" class="btn btn-xs btn-success" name="start"
+                                    value="Start">
+                            <input type="submit" class="btn btn-xs btn-success" name="delete"
+                                    value="Delete" onclick="return confirm('Are you sure?')">
+                        {% else %}
+                            <input type="submit" class="btn btn-xs btn-danger" name="stop" value="Stop"
+                                    onclick="return confirm('Are you sure?')">
+                        {% endifequal %}
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>Autostart</td>
+                <td>
+                    <form action="" method="post" role="form">{% csrf_token %}
+                        {% ifequal autostart 0 %}
+                            <input type="submit" class="btn btn-xs btn-success" name="set_autostart"
+                                    value="Enable">
+                        {% else %}
+                            <input type="submit" class="btn btn-xs btn-danger" name="unset_autostart"
+                                    onclick="return confirm('Are you sure?')"
+                                    value="Disable">
+                        {% endifequal %}
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 class="mt-2 network">IPv4 configuration</h3>
+    <hr>
+    <table class="table" role="main">
+        <tbody>
+            <tr>
+                <td>IPv4 Forwarding</td>
+                <td>
+                    {{ipv4_forward.0}}
+                </td>
+            </tr>
+            <tr>
+                <td>Network</td>
+                <td>{{ ipv4_network.0 }}</td>
+            </tr>
+            <tr>
+                <td>DHCP</td>
+                <td>
+                    {% if ipv4_dhcp_range_start and ipv4_dhcp_range_end %}
+                        <span class="text-success">ON</span>
+                    {% else %}
+                        <span class="text-danger">OFF</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if ipv4_dhcp_range_start and ipv4_dhcp_range_end %}
+                <tr>
+                    <td>Start</td>
+                    <td>{{ ipv4_dhcp_range_start }}</td>
+                </tr>
+                <tr>
+                    <td>End</td>
+                    <td>{{ ipv4_dhcp_range_end }}</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+    
+
+{% endblock %}

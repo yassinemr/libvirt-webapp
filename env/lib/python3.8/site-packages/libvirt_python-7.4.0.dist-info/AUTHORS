@@ -1,0 +1,97 @@
+  Libvirt Python Binding Authors
+  ==============================
+
+The libvirt python binding is maintained by the
+libvirt development team, who can be contacted
+at
+
+   libvir-list@redhat.com
+
+The individual contributors are
+
+   Adam Litke <agl@us.ibm.com>
+   Alex Jia <ajia@redhat.com>
+   Andrea Bolognani <abologna@redhat.com>
+   Beraldo Leal <bleal@redhat.com>
+   Boris Fiuczynski <fiuczy@linux.vnet.ibm.com>
+   Brian Rak <brak@gameservers.com>
+   Chris Lalancette <clalance@redhat.com>
+   Claudio Bley <cbley@av-test.de>
+   Cole Robinson <crobinso@redhat.com>
+   Cédric Bosdonnat <cbosdonnat@suse.com>
+   Dan Kenigsberg <danken@redhat.com>
+   Daniel P. Berrange <berrange@redhat.com>
+   Daniel P. Berrangé <berrange@redhat.com>
+   Daniel Veillard <veillard@redhat.com>
+   Diego Elio Pettenò <flameeyes@gmail.com>
+   Dmitry Guryanov <dguryanov@parallels.com>
+   Don Dugger <donald.d.dugger@intel.com>
+   Doug Goldstein <cardoe@cardoe.com>
+   Edgar Kaziakhmedov <edgar.kaziakhmedov@virtuozzo.com>
+   Eric Blake <eblake@redhat.com>
+   Erik Skultety <eskultet@redhat.com>
+   Federico Simoncelli <fsimonce@redhat.com>
+   Giuseppe Scrivano <gscrivan@redhat.com>
+   Guan Qiang <hzguanqiang@corp.netease.com>
+   Guannan Ren <gren@redhat.com>
+   Gui Jianfeng <guijianfeng@cn.fujitsu.com>
+   Guido Günther <agx@sigxcpu.org>
+   Hu Tao <hutao@cn.fujitsu.com>
+   Jason Andryuk <andryuk@aero.org>
+   Jim Fehlig <jfehlig@suse.com>
+   Jim Meyering <meyering@redhat.com>
+   Jiri Denemark <jdenemar@redhat.com>
+   John Ferlan <jferlan@redhat.com>
+   Jovanka Gulicoska <jovanka.gulicoska@gmail.com>
+   Ján Tomko <jtomko@redhat.com>
+   KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>
+   Konstantin Neumoin <kneumoin@virtuozzo.com>
+   Lai Jiangshan <laijs@cn.fujitsu.com>
+   Laine Stump <laine@laine.org>
+   Lei Li <lilei@linux.vnet.ibm.com>
+   Luyao Huang <lhuang@redhat.com>
+   Marc Hartmayer <mhartmay@linux.vnet.ibm.com>
+   Marcelo Cerri <mhcerri@linux.vnet.ibm.com>
+   Marian Neagul <marian@info.uvt.ro>
+   Mark McLoughlin <markmc@redhat.com>
+   Markus Rothe <markusr815@gmail.com>
+   Martin Kletzander <mkletzan@redhat.com>
+   MATSUDA Daiki <matsudadik@intellilink.co.jp>
+   Matthias Bolte <matthias.bolte@googlemail.com>
+   Michal Privoznik <mprivozn@redhat.com>
+   Miloslav Trmač <mitr@redhat.com>
+   Minoru Usui <usui@mxm.nes.nec.co.jp>
+   Mo Yuxiang <Moyuxiang@huawei.com>
+   Nehal J Wani <nehaljw.kkd1@gmail.com>
+   Nikunj A. Dadhania <nikunj@linux.vnet.ibm.com>
+   Nir Soffer <nirsof@gmail.com>
+   Osier Yang <jyang@redhat.com>
+   Oskari Saarenmaa <os@ohmu.fi>
+   Pavel Boldin <pboldin@mirantis.com>
+   Pavel Hrdina <phrdina@redhat.com>
+   Peng Hao <peng.hao2@zte.com.cn>
+   Peter Krempa <pkrempa@redhat.com>
+   Philipp Hahn <hahn@univention.de>
+   Prabodh Agarwal <prabodh1194@users.noreply.github.com>
+   Pradipta Kr. Banerjee <pradipta.banerjee@gmail.com>
+   Qiaowei Ren <qiaowei.ren@intel.com>
+   Radostin Stoyanov <rstoyanov@fedoraproject.org>
+   renlei4 <ren.lei4@zte.com.cn>
+   Richard W.M. Jones <rjones@redhat.com>
+   Robie Basak <robie.basak@canonical.com>
+   Serge E. Hallyn <serge.hallyn@canonical.com>
+   Sergei Turchanov <turchanov@farpost.com>
+   Stefan Berger <stefanb@us.ibm.com>
+   Taizo ITO <taizo.ito@hde.co.jp>
+   Taku Izumi <izumi.taku@jp.fujitsu.com>
+   Tomoki Sekiyama <tomoki.sekiyama@hds.com>
+   Tomáš Golembiovský <tgolembi@redhat.com>
+   Victor Stinner <victor.stinner@gmail.com>
+   Viktor Mihajlovski <mihajlov@linux.vnet.ibm.com>
+   Vincent Vanlaer <vincent.vanlaer@skynet.be>
+   w00506750 <hogan.wang@huawei.com>
+   Wojtek Porczyk <woju@invisiblethingslab.com>
+   Wu Zongyong <wuzongyo@mail.ustc.edu.cn>
+   Xavier Fernandez <xav.fernandez@gmail.com>
+   Zeeshan Ali (Khattak) <zeeshanak@gnome.org>
+   Zhou Yimin <zhouyimin@huawei.com>
