@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h3>Storage</h3>
+    <table class="table mt-5" role="main">
+        <tbody>
+            <td>Pool name</td>
+            <td>{{pool}}</td>
+            <tr>
+                <td>Pool type</td>
+                <td>{% if not type %}None{% else %}{{ type }}{% endif %}</td>
+            </tr>
+            <tr>
+                <td>Pool path</td>
+                <td>{% if not path %}None{% else %}{{ path }}{% endif %}</td>
+            </tr>
+            <tr>
+                <td>Pool status</td>
+                <td>{% if not status %}None{% else %}{{ status }}{% endif %}</td>
+            </tr>
+            <tr>
+                <td>Size({{ size|filesizeformat }} / {{ used|filesizeformat }})</td>
+                <td>Usage: {{ percent }}%</td>
+            </tr>
+            <tr>
+                <td>State</td>
+                <td>
+                    <form action="" method="post" role="form">{% csrf_token %}
+                        {% ifequal state 0 %}
+                            <input type="submit" class="btn btn-xs btn-default bg-success" name="start" value="Start">
+                            <input type="submit" class="btn btn-xs btn-default bg-danger" name="delete" value="Delete"
+                                    onclick="return confirm('Are you sure?')">
+                        {% else %}
+                            <input type="submit" class="btn btn-xs btn-default bg-danger" name="stop" value="Stop"
+                                    onclick="return confirm('Are you sure?')">
+                        {% endifequal %}
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>Autostart</td>
+                <td>
+                    <form action="" method="post" role="form">{% csrf_token %}
+                        {% ifequal autostart 0 %}
+                            <input type="submit" class="btn btn-xs btn-default bg-success" name="set_autostart"
+                                    value="Enable">
+                        {% else %}
+                            <input type="submit" class="btn btn-xs btn-default bg-danger" name="unset_autostart"
+                                    onclick="return confirm('Are you sure?)" value="Disable">
+                        {% endifequal %}
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -9,7 +9,7 @@
         {% else %}
             {% for pool in storages %}
             <div class="card mt-5">
-               <a href="/network/{{pool.name}}"> <h5 class="card-header {% if pool.status %}bg-success {% else %}bg-danger {% endif %}">{{pool.name}}</h5></a>
+               <a href="/storage/{{pool.name}}"> <h5 class="card-header {% if pool.status %}bg-success {% else %}bg-danger {% endif %}">{{pool.name}}</h5></a>
                     <div class="card-body">
                         <p>Type: {{ pool.type|upper }}</p>
 

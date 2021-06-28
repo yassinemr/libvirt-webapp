@@ -6,7 +6,8 @@ from .views import (
     instances,
     networks,
     network,
-    storages
+    storages,
+    storage
 )
 
 app_name='app'
@@ -17,4 +18,5 @@ urlpatterns = [
     path("networks", networks, name="networks"),
     path("network/<str:pool>", network, name="network"),
     path("storages", storages, name="storages"),
+    path("storage/<str:pool>", storage, name="storage"),
 ]

@@ -1,3 +1,4 @@
+from vrtManager.util import get_xml_path
 from django.shortcuts import render
 import sys
 import libvirt
@@ -253,6 +254,42 @@ def network(request,pool):
     return render(request,"network.html",context)
 
 
+def storage(request,pool):
+    errors=[]
+
+    try:
+        conn = libvirt.open('qemu:///system')
+        storage=conn.storagePoolLookupByName(pool)
+        state = storage.isActive()
+        size = storage.info()[1]
+        free = storage.info()[3]
+        used = size - free
+        if state:
+            percent = (used*100)//size
+        else:
+            percent = 0
+        
+        status = get_xml_path(storage.XMLDesc(0),"/pool/target/path")
+        type = get_xml_path(storage.XMLDesc(0),"/pool/@type")
+        autostart = storage.autostart()
+        conn.close()
+    except libvirtError as err:
+        errors.append(err)
+
+    context={
+        'pool':pool,
+        'state':state,
+        'size':size,
+        'free':free,
+        'used':used,
+        'percent':percent,
+        'status':status,
+        'type':type,
+        'autostart':autostart
+    }
+
+    return render(request,'storage.html',context)
+
 def storages(request):
     errors=[]
 
@@ -268,3 +305,5 @@ def storages(request):
     }
 
     return render(request,"storages.html",context)
+
+
