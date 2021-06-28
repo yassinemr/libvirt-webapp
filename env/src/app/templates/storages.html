@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+<h3>Storages</h3>
+    {% if not storages %}
+            <div class="well">
+                <h4>You do not have any storage pools</h4>
+            </div>
+        {% else %}
+            {% for pool in storages %}
+            <div class="card mt-5">
+               <a href="/network/{{pool.name}}"> <h5 class="card-header {% if pool.status %}bg-success {% else %}bg-danger {% endif %}">{{pool.name}}</h5></a>
+                    <div class="card-body">
+                        <p>Type: {{ pool.type|upper }}</p>
+
+                        <p>Size: {{ pool.size|filesizeformat }}</p>
+
+                        <p>Volumes: {{ pool.volumes }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+</div>
+
+{% endblock %}

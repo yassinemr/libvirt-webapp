@@ -26,42 +26,69 @@
 			</div>
 		</div>
 		<div class="col-sm-6">
-			<canvas id="cpuChart" width="400" height="400"></canvas>
-
+			<h4>Performance</h4>
+			<p>cpu usage</p>
+			<canvas id="cpu-chart" width="800" height="450"></canvas>
+			<p>memory usage</p>
+			<canvas id="mem-chart" width="800" height="450"></canvas>
+			
 		</div>
 	   	</div>
 	</div>
 {% endblock %}
 {% block extra_scripts %}				
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>			
 <script>
+//////////////////////
+
+function hostusage() {
+	$.getJSON('http://localhost:8000/hostusage', function (data) {
+		new Chart(document.getElementById("mem-chart"), {
+					type: 'line',
+					data: {
+						labels: data["timer"],
+						datasets: [{ 
+							data: data["mem"],
+							label: "memory",
+							borderColor: "#3e95cd",
+							fill: false
+						}
+						]
+					},
+					options: {
+						title: {
+						display: true
+						
+						}
+					}
+					});
+		//////////////////
+		new Chart(document.getElementById("cpu-chart"), {
+					type: 'line',
+					data: {
+						labels: data["timer"],
+						datasets: [{ 
+							data: data["cpu"],
+							label: "cpu",
+							borderColor: "#3e95cd",
+							fill: false
+						}
+						]
+					},
+					options: {
+						title: {
+						display: true
+					
+						}
+					}
+					});
+	});
+}
+hostusage()
+
+$(function () {
+	window.setInterval('hostusage()', 30000);
+});
         
-        var endpoint ='/hostusage'
-		var defaultdata=[];
-		var labels=[];
-        function hostusage() {
-
-            $.getJSON('/hostusage', function (data) {
-				defaultdata=data['data']
-				labels=data['labels']
-				console.log(defaultdata,labels)
-            });
-        }
-        $(function () {
-            window.setInterval('hostusage()', 3000);
-        });
-
-		var cpu_ctx = $("#cpuChart").get(0).getContext("2d");
-        var myChart = new Chart(cpu_ctx, {
-    		type: 'line',
-			data:[{
-				label: 'My First Dataset',
-				data: defaultdata,
-				fill: false,
-				borderColor: 'rgb(75, 192, 192)',
-				tension: 0.1
-			}]
-		})
-
-        
-    </script>
+</script>
 {% endblock extra_scripts %}

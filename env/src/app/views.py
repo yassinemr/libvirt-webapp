@@ -4,7 +4,7 @@ import libvirt
 from hurry.filesize import size
 from xml.dom import minidom
 from django.template import RequestContext, context
-from vrtManager.hostdetails import force_shutdown, get_cpu_usage, get_instance_managed_save_image, get_instance_memory, get_instance_status, get_instance_vcpu, get_ipv4_dhcp_range_end, get_ipv4_dhcp_range_start, get_ipv4_forward, get_ipv4_network, get_memory_usage, get_networks, get_networks_info, get_node_info,hypervisor_type, managed_save_remove, managedsave, resume, shutdown, start, suspend
+from vrtManager.hostdetails import force_shutdown, get_cpu_usage, get_instance_managed_save_image, get_instance_memory, get_instance_status, get_instance_vcpu, get_ipv4_dhcp_range_end, get_ipv4_dhcp_range_start, get_ipv4_forward, get_ipv4_network, get_memory_usage, get_networks, get_networks_info, get_node_info, get_storages_info,hypervisor_type, managed_save_remove, managedsave, resume, shutdown, start, suspend
 from libvirt import libvirtError
 from django.http import HttpResponse, HttpResponseRedirect
 import json
@@ -20,7 +20,7 @@ class hostusage(APIView):
     permission_classes=[]
 
     def get(self,request,format=None):
-        points = 5
+        points = 10
         datasets = {}
         cookies = {}
         curent_time = time.strftime("%H:%M:%S")
@@ -29,15 +29,18 @@ class hostusage(APIView):
 
             conn = libvirt.open('qemu:///system')
             cpu_usage = get_cpu_usage(conn)
+            mem_usage = get_memory_usage(conn)
 
         except libvirtError:
             cpu_usage = 0
             mem_usage = 0
 
         try:
-            cookies['cpu'] = request.COOKIES.get('cpu')
-            cookies['mem'] = request.COOKIES.get('meme')
-            cookies['timer'] = request.COOKIES.get('timer')
+
+            cookies['cpu'] = request.COOKIES.get('cpu') 
+            cookies['mem'] = request.COOKIES.get('mem') 
+            cookies['timer'] = request.COOKIES.get('timer') 
+
         except KeyError:
             cookies['cpu'] = None
             cookies['mem'] = None
@@ -47,28 +50,28 @@ class hostusage(APIView):
             datasets['mem'] = [0]
             datasets['timer'] = [curent_time]
         else:
-            datasets['cpu'] = eval(str(cookies['cpu']))
-            datasets['mem'] = eval(str(cookies['mem']))
-            datasets['timer'] = eval(str(cookies['timer']))
+            datasets['cpu'] = eval(cookies['cpu'])
+            datasets['mem'] = eval(cookies['mem'])
+            datasets['timer'] = eval(cookies['timer'])
 
         datasets['timer'].append(curent_time)
         datasets['cpu'].append(int(cpu_usage['usage']))
-
+        datasets['mem'].append(int(mem_usage['usage']) / 1048576)
 
         if len(datasets['timer']) > points:
             datasets['timer'].pop(0)
         if len(datasets['cpu']) > points:
             datasets['cpu'].pop(0)
+        if len(datasets['mem']) > points:
+            datasets['mem'].pop(0)
 
-
-       
-
-
-        data = json.dumps({'labels': datasets['timer'],'data': datasets['cpu']})
+        data = json.dumps({'cpu': datasets['cpu'], 'mem': datasets['mem'],'timer': datasets['timer']})
+   
         response = HttpResponse()
         response['Content-Type'] = "text/javascript"
         response.cookies['cpu'] = datasets['cpu']
         response.cookies['timer'] = datasets['timer']
+        response.cookies['mem'] = datasets['mem']
         response.write(data)
         return response
 
@@ -248,3 +251,20 @@ def network(request,pool):
 
     print(context)
     return render(request,"network.html",context)
+
+
+def storages(request):
+    errors=[]
+
+    try:
+        conn = libvirt.open('qemu:///system')
+        storages = get_storages_info(conn)
+        conn.close()
+    except libvirtError as err:
+        errors.append(err)
+
+    context={
+        'storages':storages
+    }
+
+    return render(request,"storages.html",context)

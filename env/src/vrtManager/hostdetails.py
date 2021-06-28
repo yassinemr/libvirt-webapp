@@ -179,4 +179,21 @@ def get_ipv4_dhcp_range_end(net):
 
     return dhcp[1] 
 
-    
+"""storages"""
+
+def get_storages_info(conn):
+        get_storages = conn.listAllStoragePools(0)
+        storages = []
+        for pool in get_storages:
+            stg = conn.storagePoolLookupByName(pool.name())
+            stg_status = stg.isActive()
+            stg_type = get_xml_path(stg.XMLDesc(0), "/pool/@type")
+            if stg_status:
+                stg_vol = len(stg.listVolumes())
+            else:
+                stg_vol = None
+            stg_size = stg.info()[1]
+            storages.append({'name': pool.name(), 'status': stg_status,
+                             'type': stg_type, 'volumes': stg_vol,
+                             'size': stg_size})
+        return storages
