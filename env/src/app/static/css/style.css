@@ -29,6 +29,17 @@
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
 
+.vmachines .table > :not(caption) > * > * {
+    padding: .5rem .5rem;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+.vmachine {
+    color: teal !important;
+}
+
 a{
     color:white !important;
 }

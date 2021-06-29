@@ -2,55 +2,57 @@
 {% block content %}
 
 	<div class="container"> 
-	   <div class="row">
-	   	<div class="col-sm-6">
-		   <div class="details__host">
-				<div>
-					<img src="/images/server.png" width="250" height="250"  />
-				</div>
+		<div class="details__host">
+			<div>
+				<img src="/images/server.png" width="250" height="250"  />
+			</div>
 				<div class="infos">
-				<table class="table mt-5" role="main">
-        			<tbody>
-						<td><h3>Hostname: </h3></td><td><h3>{{hostname}}</h3></td>
-						<tr>
-							<td>Connection:</td>
-							<td>{{uri_conn}}</td>
-						</tr>
-						<tr>
-							<td>Hypervisor:</td>
-							<td>{{hypervisor}}</td>
-						</tr>
-						<tr>
-							<td>Memory:</td>
-							<td>{{host_memory}}</td>
-						</tr>
-						<tr>
-							<td>Logical CPUs:</td>
-							<td>{{logical_cpu}}</td>
-						</tr>
-						<tr>
-							<td>Processor:</td>
-							<td>{{model_cpu}}</td>
-						</tr>
-						<tr>
-							<td>Architecture:</td>
-							<td>{{host_arch}}</td>
-						</tr>
-					</tbody>
-				</table>				
+					<table class="table mt-5" role="main">
+						<tbody>
+							<td><h3>Hostname: </h3></td><td><h3>{{hostname}}</h3></td>
+							<tr>
+								<td>Connection:</td>
+								<td>{{uri_conn}}</td>
+							</tr>
+							<tr>
+								<td>Hypervisor:</td>
+								<td>{{hypervisor}}</td>
+							</tr>
+							<tr>
+								<td>Memory:</td>
+								<td>{{host_memory}}</td>
+							</tr>
+							<tr>
+								<td>Logical CPUs:</td>
+								<td>{{logical_cpu}}</td>
+							</tr>
+							<tr>
+								<td>Processor:</td>
+								<td>{{model_cpu}}</td>
+							</tr>
+							<tr>
+								<td>Architecture:</td>
+								<td>{{host_arch}}</td>
+							</tr>
+						</tbody>
+					</table>				
 				</div>
+		</div>
+	</div>
+	<div class="container my-5 mr-5 ml-5"> 
+		<div class="row">
+			<h3>Performance</h3>
+			<div class="col-sm-6">
+			<p>cpu usage</p>
+				<canvas id="cpu-chart" width="800" height="450"></canvas>
+			</div>
+			<div class="col-sm-6">	
+				<p>memory usage</p>
+				<canvas id="mem-chart" width="800" height="450"></canvas>
 			</div>
 		</div>
-		<div class="col-sm-6">
-			<h4>Performance</h4>
-			<p>cpu usage</p>
-			<canvas id="cpu-chart" width="800" height="450"></canvas>
-			<p>memory usage</p>
-			<canvas id="mem-chart" width="800" height="450"></canvas>
-			
-		</div>
-	   	</div>
 	</div>
+	
 {% endblock %}
 {% block extra_scripts %}				
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>			
@@ -66,8 +68,8 @@ function hostusage() {
 						datasets: [{ 
 							data: data["mem"],
 							label: "memory",
-							borderColor: "#3e95cd",
-							fill: false
+							borderColor: "rgb(255, 99, 132)",
+							fill: true
 						}
 						]
 					},
@@ -87,7 +89,7 @@ function hostusage() {
 							data: data["cpu"],
 							label: "cpu",
 							borderColor: "#3e95cd",
-							fill: false
+							fill: true 
 						}
 						]
 					},

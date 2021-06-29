@@ -3,8 +3,8 @@
 <div class="container mt-5">
 <h3>Instances</h3>
 {% if instances %}
-    <div class="table-responsive mt-5">
-        <table class="table" id="sortTable">
+    <div class="table-responsive mt-5 vmachines">
+        <table class="table table-striped" id="sortTable">
             <thead>
             <tr class="active">
                 <th>Name </th>
@@ -16,8 +16,8 @@
             </thead>
             <tbody>
             {% for inst in instances %}
-                <tr id="{{ inst.name }}">
-                    <td><a href="#"><i
+                <tr id="{{ inst.name }}" >
+                    <td><a href="#" class="vmachine"><i
                             class="icon-th-large"></i> {{ inst.name }}</a></td>
                     <td>{% ifequal inst.status 1 %}
                         <span class="text-success">Running</span>
