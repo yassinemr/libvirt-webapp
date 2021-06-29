@@ -9,19 +9,35 @@
 					<img src="/images/server.png" width="250" height="250"  />
 				</div>
 				<div class="infos">
-					<h3>Hostname: <span>{{hostname}}</span></h3>
-					<p>Connection: <span>{{uri_conn}}</span></p>
-					<p>Hypervisor: <span>{{hypervisor}}</span></p>
-					<p>Memory: <span>{{host_memory}}</span></p>
-					<p>Logical CPUs: <span>{{logical_cpu}}</span></p>
-					<p> Processor:<span>{{model_cpu}}</span></p>
-					<p>Architecture: <span>{{host_arch}}</span></p>
-					
-						
-					
-					
-					
-					
+				<table class="table mt-5" role="main">
+        			<tbody>
+						<td><h3>Hostname: </h3></td><td><h3>{{hostname}}</h3></td>
+						<tr>
+							<td>Connection:</td>
+							<td>{{uri_conn}}</td>
+						</tr>
+						<tr>
+							<td>Hypervisor:</td>
+							<td>{{hypervisor}}</td>
+						</tr>
+						<tr>
+							<td>Memory:</td>
+							<td>{{host_memory}}</td>
+						</tr>
+						<tr>
+							<td>Logical CPUs:</td>
+							<td>{{logical_cpu}}</td>
+						</tr>
+						<tr>
+							<td>Processor:</td>
+							<td>{{model_cpu}}</td>
+						</tr>
+						<tr>
+							<td>Architecture:</td>
+							<td>{{host_arch}}</td>
+						</tr>
+					</tbody>
+				</table>				
 				</div>
 			</div>
 		</div>

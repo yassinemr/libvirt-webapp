@@ -11,7 +11,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 import json
 import time
 from rest_framework.views import APIView 
-import numpy 
+from django.urls import reverse
 
 class hostusage(APIView):
     """
@@ -272,7 +272,38 @@ def storage(request,pool):
         status = get_xml_path(storage.XMLDesc(0),"/pool/target/path")
         type = get_xml_path(storage.XMLDesc(0),"/pool/@type")
         autostart = storage.autostart()
-        conn.close()
+        if request.method == 'POST':
+            if 'start' in request.POST:
+                try:
+                    storage.create(0)
+                    return HttpResponseRedirect(request.get_full_path())
+                except libvirtError as error_msg:
+                    errors.append(error_msg.message)
+            if 'stop' in request.POST:
+                try:
+                    storage.destroy()
+                    return HttpResponseRedirect(request.get_full_path())
+                except libvirtError as error_msg:
+                    errors.append(error_msg.message)
+            if 'delete' in request.POST:
+                try:
+                    storage.delete()
+                    return HttpResponseRedirect(reverse('storages'))
+                except libvirtError as error_msg:
+                    errors.append(error_msg.message)
+            if 'set_autostart' in request.POST:
+                try:
+                    storage.setAutostart(1)
+                    return HttpResponseRedirect(request.get_full_path())
+                except libvirtError as error_msg:
+                    errors.append(error_msg.message)
+            if 'unset_autostart' in request.POST:
+                try:
+                    storage.setAutostart(0)
+                    return HttpResponseRedirect(request.get_full_path())
+                except libvirtError as error_msg:
+                    errors.append(error_msg.message)
+            conn.close()
     except libvirtError as err:
         errors.append(err)
 
