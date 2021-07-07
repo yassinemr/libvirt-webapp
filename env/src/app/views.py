@@ -1,5 +1,5 @@
 from vrtManager.util import get_xml_path
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 import sys
 import libvirt
 from hurry.filesize import size
@@ -12,6 +12,35 @@ import json
 import time
 from rest_framework.views import APIView 
 from django.urls import reverse
+from django.contrib.auth import authenticate,login,logout
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
+def accesPage(request):
+    #######################
+    
+   # user = User.objects.create_user('kvmkvm', 'kvmkvm')
+   # user.save()
+
+    #######################
+    #recuperation des donnees
+    if request.method == "POST":
+        nom=request.POST.get('username')
+        passwd=request.POST.get('password')
+        user=authenticate(request,username=nom,password=passwd)
+        # si l'utilisateur est existe
+        if user is not None:
+            login(request,user)
+            return redirect("/")
+        else:
+            messages.info(request,"username or password invalid !")
+    context={}
+    return render(request,'acces.html')
+
+def logOut(request):
+    logout(request)
+    return redirect("/acces")
 
 class hostusage(APIView):
     """
@@ -57,7 +86,7 @@ class hostusage(APIView):
 
         datasets['timer'].append(curent_time)
         datasets['cpu'].append(int(cpu_usage['usage']))
-        datasets['mem'].append(int(mem_usage['usage']) / 1048576)
+        datasets['mem'].append(int(-mem_usage['usage']) / 1048576)
 
         if len(datasets['timer']) > points:
             datasets['timer'].pop(0)
@@ -76,6 +105,7 @@ class hostusage(APIView):
         response.write(data)
         return response
 
+@login_required(login_url='/login')
 def home(request):
     test = ""
     try:
@@ -111,7 +141,7 @@ def home(request):
         
     return render(request,"home.html",context)
 
-
+@login_required(login_url='/login')
 def instances(request):
     """
     Instances block
@@ -181,7 +211,7 @@ def instances(request):
     return render(request,"vmachines.html",context)
 
 """network"""
-
+@login_required(login_url='/login')
 def networks(request):
     errors = []
 
@@ -199,7 +229,7 @@ def networks(request):
     }
     return render(request,"networks.html",context)
 
-
+@login_required(login_url='/login')
 def network(request,pool):
 
     """
@@ -253,7 +283,7 @@ def network(request,pool):
     print(context)
     return render(request,"network.html",context)
 
-
+@login_required(login_url='/login')
 def storage(request,pool):
     errors=[]
 
@@ -321,6 +351,7 @@ def storage(request,pool):
 
     return render(request,'storage.html',context)
 
+@login_required(login_url='/login')
 def storages(request):
     errors=[]
 

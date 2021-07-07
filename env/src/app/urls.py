@@ -7,7 +7,9 @@ from .views import (
     networks,
     network,
     storages,
-    storage
+    storage,
+    accesPage,
+    logOut
 )
 
 app_name='app'
@@ -19,4 +21,6 @@ urlpatterns = [
     path("network/<str:pool>", network, name="network"),
     path("storages", storages, name="storages"),
     path("storage/<str:pool>", storage, name="storage"),
+    path('login/',accesPage,name="login"),
+    path('logout/',logOut,name="logout"),
 ]
