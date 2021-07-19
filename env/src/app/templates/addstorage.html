@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h4 class="">Add New STORAGE</h4>
+<div class="container">
+        <form class="form-horizontal" method="post" action="http://localhost:8000/addstorage" role="form">{% csrf_token %}
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label">nom</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="name" placeholder="le nom" required
+                           pattern="[a-zA-Z0-9_]+">
+                </div>
+            </div>
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Type Storage</label>
+
+                <div class="col-sm-6">
+                    <select id="forward_select" class="form-control" name="stg_type">
+                        <option value="dir">DIR</option>
+                        
+                        <option value="logiciel">LOGICIEL</option>
+                    </select>
+                </div>
+            </div>
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">capacity</label>
+        
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="capacity" placeholder="20"
+                           maxlength="2" required pattern="[0-9]+" >
+                </div>
+            </div>
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group bridge_name_form_group" id="bridge_name_form_group">
+                <label class="col-sm-4 control-label">source Name</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="source_name" placeholder="nom"
+                           pattern="[a-z0-9\-_:]+">
+                </div>
+            </div>
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Path</label>
+        
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="target" placeholder="/home/ubuntu/Music"
+                           maxlength="40" required pattern="[a-zA-Z0-9\/\-_]+" value="/home/ubuntu/">
+                </div>
+            </div>
+
+
+
+          
+           
+            <div class="modal-footer">
+                
+                <a href="http://localhost:8000/storages" class="btn btn-secondary" > Close</a>
+                <button type="submit" class="btn btn-primary" name="create">Create</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<script>
+$(document).ready(function () {
+    $('#forward_select').change(function (eventObject) {
+        if ($(this).val() == 'logiciel') {
+            $('.bridge_name_form_group').show();
+      } else {
+            $('.bridge_name_form_group').hide();
+            
+        }
+    }).change();
+});
+</script>
+
+
+
+
+{% endblock %}

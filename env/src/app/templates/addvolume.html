@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h4 class="">Add New Volume</h4>
+<div class="container">
+        <form class="form-horizontal" method="post" action="{{request.get_full_path}}/../addvolume " role="form">{% csrf_token %}
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label">name</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="name" placeholder="le nom" required
+                           pattern="[a-zA-Z0-9_]+">
+                </div>
+            </div>
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label">format</label>
+
+                <div class="col-sm-6">
+                    <select id="forward_select" class="form-control" name="format">
+                        <option value="qcow2">qcow2</option>
+                        <option value="raw">raw</option>
+                    </select>
+                </div>
+            </div>
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">capacity (MiB)</label>
+        
+                <div class="col-sm-6">
+                    <input type="number" class="form-control" name="capacity" 
+                             min=0  >
+                </div>
+            </div>
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group bridge_name_form_group" >
+                <label class="col-sm-4 control-label">allocation  (MiB)</label>
+
+                <div class="col-sm-6">
+                    <input type="number" class="form-control" name="allocation"
+                              min=0>
+                </div>
+            </div>
+            <!--//////////////////////////////////////////////////////-->
+            <div class="form-group name_form_group">
+                <label class="col-sm-3 control-label">Path</label>
+        
+                <div class="col-sm-6">
+                    <input type="text"  id="" class="form-control" name="target" >
+                    
+                </div>
+            </div>
+
+
+
+          
+           
+            <div class="modal-footer">
+                
+                <a href={{request.get_full_path}}/.. class="btn btn-secondary" > Close</a>
+                <button type="submit" class="btn btn-primary" name="create">Create</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<script>
+  
+    /////////////////////
+  
+$(document).ready(function () {
+    $('#forward_select').change(function (eventObject) {
+        if ($(this).val() == 'raw') {
+            $('.bridge_name_form_group').show();
+            $('.name_form_group').hide();
+      } else {
+            $('.bridge_name_form_group').hide();
+            $('.name_form_group').show();
+        }
+    }).change();
+});
+</script>
+
+
+
+
+{% endblock %}

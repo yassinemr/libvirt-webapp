@@ -2,6 +2,9 @@
 {% block content %}
 <div class="container mt-5">
     <h3>Storage</h3>
+    <div >
+        <a href= {{request.get_full_path}}/preaddvolume  class="btn btn-success" style="float: right;" >New Volumes</a>
+    </div>
     <table class="table mt-5" role="main">
         <tbody>
             <td>Pool name</td>
@@ -50,6 +53,25 @@
                         {% endifequal %}
                     </form>
                 </td>
+            </tr>
+            <tr>
+            {% ifequal state 1 %}
+                <td> list volumes</td>
+                <td> 
+                    
+                    {%for v in listvolumes %}
+                   
+                        <table>
+                            <tr>
+                                <td>{{v}} &nbsp; &nbsp; </td>
+                                <td> <a href= {{request.get_full_path}}/{{v}}  class="btn btn-danger"  >remove</a></td>
+                            </tr>
+                        </table>
+                       
+                   
+                    {%endfor%}
+                </td>
+                {%endifequal %}
             </tr>
         </tbody>
     </table>

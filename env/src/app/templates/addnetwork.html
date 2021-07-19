@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h4 class="container">Add New Network</h4>
+<div class="container"> 
+        <form class="form-horizontal" method="post" action="http://localhost:8000/addnetwork/" role="form">{% csrf_token %}
+            <div class="form-group">
+                <label class="col-sm-4 control-label">nom</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="name" placeholder="default" required
+                           pattern="[a-zA-Z0-9_]+">
+                </div>
+            </div>
+            <div class="form-group bridge_name_form_group_dhcp">
+                <label class="col-sm-4 control-label">adress ip</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="gateway" placeholder="192.168.100.0" required
+                           pattern="[0-9\/\.]+">
+                </div>
+                <label class="col-sm-4 control-label">mask</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="mask" placeholder="255.255.255.0" required
+                           pattern="[0-9\/\.]+">
+                </div>
+                <label class="col-sm-4 control-label">Name</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="bridge_name1" placeholder="virbr0"
+                           pattern="[a-z0-9\-_:]+">
+                </div>
+            </div>
+            <div class="form-group bridge_name_form_group_dhcp">
+                <label class="col-sm-6 control-label">range</label>
+                
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="ipstart" placeholder="192.168.100.2" required
+                           pattern="[0-9\/\.]+">
+                </div>
+                
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="ipend" placeholder="192.168.100.244" required
+                           pattern="[0-9\/\.]+">
+                </div>
+             </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Type forwarding</label>
+
+                <div class="col-sm-6">
+                    <select id="forward_select" class="form-control" name="forward">
+                        <option value="nat">NAT</option>
+                        
+                        <option value="bridge">BRIDGE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group bridge_name_form_group">
+                <label class="col-sm-4 control-label">Bridge Name</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="bridge_name" placeholder="br0"
+                           pattern="[a-z0-9\-_:]+">
+                </div>
+            </div>
+           
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" name="create">Create</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<script>
+$(document).ready(function () {
+    $('#forward_select').change(function (eventObject) {
+        if ($(this).val() == 'bridge') {
+            $('.bridge_name_form_group').show();
+     
+$('.bridge_name_form_group_dhcp').hide();
+        } else {
+            $('.bridge_name_form_group').hide();
+            $('.bridge_name_form_group_dhcp').show();
+        }
+    }).change();
+});
+</script>
+
+{% endblock %}

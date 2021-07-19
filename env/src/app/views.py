@@ -1,3 +1,4 @@
+from vrtManager.storage import create_storage, create_volume_qcow2, create_volume_raw
 from vrtManager.util import get_xml_path
 from django.shortcuts import render,redirect
 import sys
@@ -5,7 +6,7 @@ import libvirt
 from hurry.filesize import size
 from xml.dom import minidom
 from django.template import RequestContext, context
-from vrtManager.hostdetails import force_shutdown, get_cpu_usage, get_instance_managed_save_image, get_instance_memory, get_instance_status, get_instance_vcpu, get_ipv4_dhcp_range_end, get_ipv4_dhcp_range_start, get_ipv4_forward, get_ipv4_network, get_memory_usage, get_networks, get_networks_info, get_node_info, get_storages_info,hypervisor_type, managed_save_remove, managedsave, resume, shutdown, start, suspend
+from vrtManager.hostdetails import create_network, force_shutdown, get_cpu_usage, get_instance_managed_save_image, get_instance_memory, get_instance_status, get_instance_vcpu, get_ipv4_dhcp_range_end, get_ipv4_dhcp_range_start, get_ipv4_forward, get_ipv4_network, get_memory_usage, get_networks, get_networks_info, get_node_info, get_storages_info,hypervisor_type, managed_save_remove, managedsave, resume, shutdown, start, suspend
 from libvirt import libvirtError
 from django.http import HttpResponse, HttpResponseRedirect
 import json
@@ -261,7 +262,7 @@ def network(request,pool):
             return HttpResponseRedirect(request.get_full_path())
         if 'delete' in request.POST:
             network.undefine()
-            return HttpResponseRedirect(request.get_full_path())
+            return redirect('/networks')
         if 'set_autostart' in request.POST:
             network.setAutostart(1)
             return HttpResponseRedirect(request.get_full_path())
@@ -283,6 +284,17 @@ def network(request,pool):
     print(context)
     return render(request,"network.html",context)
 
+def addnetwork(request):
+    conn = libvirt.open('qemu:///system')
+    if 'create' in request.POST:
+        data = request.POST
+        create_network(conn,data['name'], data['forward'],data['gateway'],data['mask'],data['ipstart'],data['ipend'], data['bridge_name'],data['bridge_name1'])
+    return redirect('/networks')
+
+######################### 
+def preaddnetwork(request):
+    return render(request,"addnetwork.html")
+
 @login_required(login_url='/login')
 def storage(request,pool):
     errors=[]
@@ -291,6 +303,11 @@ def storage(request,pool):
         conn = libvirt.open('qemu:///system')
         storage=conn.storagePoolLookupByName(pool)
         state = storage.isActive()
+        if state:
+            listvolumes=storage.listVolumes()
+        else:
+            listvolumes=[]
+
         size = storage.info()[1]
         free = storage.info()[3]
         used = size - free
@@ -317,8 +334,8 @@ def storage(request,pool):
                     errors.append(error_msg.message)
             if 'delete' in request.POST:
                 try:
-                    storage.delete()
-                    return HttpResponseRedirect(reverse('storages'))
+                    storage.delete(0)
+                    return redirect('/storages')
                 except libvirtError as error_msg:
                     errors.append(error_msg.message)
             if 'set_autostart' in request.POST:
@@ -346,7 +363,8 @@ def storage(request,pool):
         'percent':percent,
         'status':status,
         'type':type,
-        'autostart':autostart
+        'autostart':autostart,
+        'listvolumes':listvolumes
     }
 
     return render(request,'storage.html',context)
@@ -369,3 +387,32 @@ def storages(request):
     return render(request,"storages.html",context)
 
 
+def preaddvolume(request,pool):
+    conn = libvirt.open('qemu:///system')
+    
+    return render(request,"addvolume.html")
+
+def addvolume(request,pool):
+    data=request.POST
+    conn = libvirt.open('qemu:///system')
+    if data["format"]=="raw":
+            create_volume_raw(conn,pool,data["name"],data["capacity"],data["allocation"])
+    else:
+            create_volume_qcow2(conn,pool,data["name"],data["capacity"],"/home/ubuntu/Music/machine")
+    return redirect("/storages")
+
+def rmvolume(request,pool,name):
+    conn = libvirt.open('qemu:///system')
+    storage=conn.storagePoolLookupByName(pool)
+    vol = storage.storageVolLookupByName(name)
+    vol.delete(0)  
+    return redirect("/storage/"+pool)
+
+def preaddstorage(request):
+    return render(request,"addstorage.html")
+
+def addstorage(request):
+    conn = libvirt.open('qemu:///system')
+    data=request.POST
+    create_storage(conn,data["stg_type"],data["name"],data["source_name"],data["target"],data["capacity"])
+    return redirect('/storages')

@@ -197,3 +197,38 @@ def get_storages_info(conn):
                              'type': stg_type, 'volumes': stg_vol,
                              'size': stg_size})
         return storages
+
+from vrtManager import util
+
+def create_network(conn, name, forward, gateway, mask, ipstart, ipend,bridgename,bridgename1):
+    if forward != 'bridge': 
+       xml = """
+            <network>
+            <name>%s</name>
+            
+            <forward mode="nat">
+                <nat>
+                <port start="1024" end="65535"/>
+                </nat>
+            </forward>
+            <bridge name="%s" stp="on" delay="0"/>
+            <mac address="52:54:00:6b:60:99"/>
+            <ip address="%s" netmask="%s">
+                <dhcp>
+                <range start="%s" end="%s"/>
+                </dhcp>
+            </ip>
+            </network>
+            """ % (name,bridgename1,gateway,mask,ipstart,ipend)
+    else:
+        xml="""<network type='bridge'>
+      <name>%s</name>
+      <forward mode='bridge'/>
+      <bridge name='%s'/>
+        </network>
+    """% (name,bridgename)
+    conn.networkDefineXML(xml)
+    net = conn.networkLookupByName(name)
+    net.create()
+    net.setAutostart(1)
+    return 1
